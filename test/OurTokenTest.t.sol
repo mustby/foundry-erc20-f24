@@ -2,9 +2,10 @@
 
 pragma solidity ^0.8.18;
 
-import {Test} from "forge-std/Test.sol";
+import {Test} from "lib/forge-std/src/Test.sol";
 import {DeployOurToken} from "../script/DeployOurToken.s.sol";
 import {OurToken} from "../src/OurToken.sol";
+import {console2} from "lib/forge-std/src/console2.sol";
 
 contract OurTokenTest is Test {
     OurToken public ourToken;
@@ -23,11 +24,11 @@ contract OurTokenTest is Test {
         ourToken.transfer(bob, STARTING_BALANCE);
     }
 
-    function testBobBalance() public {
+    function test__BobBalance() public {
         assertEq(STARTING_BALANCE, ourToken.balanceOf(bob));
     }
 
-    function testAllowancesWorks() public {
+    function test__AllowancesWorks() public {
         uint256 initialAllowance = 1000;
 
         // Bob approves Alice to spend tokens on her behalf
@@ -42,6 +43,9 @@ contract OurTokenTest is Test {
 
         assertEq(ourToken.balanceOf(alice), transferAmount);
         assertEq(ourToken.balanceOf(bob), STARTING_BALANCE - transferAmount);
+
+        console2.log("Bob's balance after transfer: ", ourToken.balanceOf(bob));
+        console2.log("Alice's balance after transfer: ", ourToken.balanceOf(alice));
     }
 }
 
